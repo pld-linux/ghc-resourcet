@@ -6,60 +6,42 @@
 Summary:	Deterministic allocation and freeing of scarce resources
 Summary(pl.UTF-8):	Deterministyczne przydzielanie i zwalnianie brakujących zasobów
 Name:		ghc-%{pkgname}
-Version:	0.4.10
+Version:	1.2.4
 Release:	1
 License:	BSD
 Group:		Development/Languages
 #Source0Download: http://hackage.haskell.org/package/resourcet
 Source0:	http://hackage.haskell.org/package/%{pkgname}-%{version}/%{pkgname}-%{version}.tar.gz
-# Source0-md5:	16f1f663be6bb1284177366ccc07a93b
+# Source0-md5:	ea8f630f0630639eef7546e7315eda5f
 URL:		http://hackage.haskell.org/package/resourcet
 BuildRequires:	ghc >= 6.12.3
 BuildRequires:	ghc-base >= 4.3
-BuildRequires:	ghc-base < 5
 BuildRequires:	ghc-containers
-BuildRequires:	ghc-lifted-base >= 0.1
-BuildRequires:	ghc-mmorph
-BuildRequires:	ghc-monad-control >= 0.3.1
-BuildRequires:	ghc-monad-control < 0.4
+BuildRequires:	ghc-exceptions
 BuildRequires:	ghc-mtl >= 2.0
-BuildRequires:	ghc-mtl < 2.2
+BuildRequires:	ghc-primitive
 BuildRequires:	ghc-transformers >= 0.2.2
-BuildRequires:	ghc-transformers < 0.4
-BuildRequires:	ghc-transformers-base >= 0.4.1
-BuildRequires:	ghc-transformers-base < 0.5
+BuildRequires:	ghc-unliftio-core
 %if %{with prof}
 BuildRequires:	ghc-prof >= 6.12.3
 BuildRequires:	ghc-base-prof >= 4.3
-BuildRequires:	ghc-base-prof < 5
 BuildRequires:	ghc-containers-prof
-BuildRequires:	ghc-lifted-base-prof >= 0.1
-BuildRequires:	ghc-mmorph-prof
-BuildRequires:	ghc-monad-control-prof >= 0.3.1
-BuildRequires:	ghc-monad-control-prof < 0.4
+BuildRequires:	ghc-exceptions-prof
 BuildRequires:	ghc-mtl-prof >= 2.0
-BuildRequires:	ghc-mtl-prof < 2.2
+BuildRequires:	ghc-primitive-prof
 BuildRequires:	ghc-transformers-prof >= 0.2.2
-BuildRequires:	ghc-transformers-prof < 0.4
-BuildRequires:	ghc-transformers-base-prof >= 0.4.1
-BuildRequires:	ghc-transformers-base-prof < 0.5
+BuildRequires:	ghc-unliftio-core-prof
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.608
 Requires(post,postun):	/usr/bin/ghc-pkg
 %requires_eq	ghc
 Requires:	ghc-base >= 4.3
-Requires:	ghc-base < 5
 Requires:	ghc-containers
-Requires:	ghc-lifted-base >= 0.1
-Requires:	ghc-mmorph
-Requires:	ghc-monad-control >= 0.3.1
-Requires:	ghc-monad-control < 0.4
+Requires:	ghc-exceptions
 Requires:	ghc-mtl >= 2.0
-Requires:	ghc-mtl < 2.2
+Requires:	ghc-primitive
 Requires:	ghc-transformers >= 0.2.2
-Requires:	ghc-transformers < 0.4
-Requires:	ghc-transformers-base >= 0.4.1
-Requires:	ghc-transformers-base < 0.5
+Requires:	ghc-unliftio-core
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # debuginfo is not useful for ghc
@@ -86,18 +68,12 @@ Summary(pl.UTF-8):	Biblioteka profilująca %{pkgname} dla GHC
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	ghc-base-prof >= 4.3
-Requires:	ghc-base-prof < 5
 Requires:	ghc-containers-prof
-Requires:	ghc-lifted-base-prof >= 0.1
-Requires:	ghc-mmorph-prof
-Requires:	ghc-monad-control-prof >= 0.3.1
-Requires:	ghc-monad-control-prof < 0.4
+Requires:	ghc-exceptions-prof
 Requires:	ghc-mtl-prof >= 2.0
-Requires:	ghc-mtl-prof < 2.2
+Requires:	ghc-primitive-prof
 Requires:	ghc-transformers-prof >= 0.2.2
-Requires:	ghc-transformers-prof < 0.4
-Requires:	ghc-transformers-base-prof >= 0.4.1
-Requires:	ghc-transformers-base-prof < 0.5
+Requires:	ghc-unliftio-core-prof
 
 %description prof
 Profiling %{pkgname} library for GHC. Should be installed when
@@ -160,21 +136,36 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 %{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/HSresourcet-%{version}.o
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSresourcet-%{version}.a
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSresourcet-%{version}-*.so
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSresourcet-%{version}-*.a
+%exclude %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSresourcet-%{version}-*_p.a
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/Resource.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/*.dyn_hi
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/Resource
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/Resource/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/Resource/*.dyn_hi
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/*.dyn_hi
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/Acquire
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/Acquire/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/Acquire/*.dyn_hi
+%dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/UnliftIO
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/UnliftIO/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/UnliftIO/*.dyn_hi
 
 %if %{with prof}
 %files prof
 %defattr(644,root,root,755)
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSresourcet-%{version}_p.a
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSresourcet-%{version}-*_p.a
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/Resource.p_hi
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Control/Monad/Trans/Resource/*.p_hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/*.p_hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Data/Acquire/*.p_hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/UnliftIO/*.p_hi
 %endif
 
 %files doc
