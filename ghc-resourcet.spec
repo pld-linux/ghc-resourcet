@@ -7,7 +7,7 @@ Summary:	Deterministic allocation and freeing of scarce resources
 Summary(pl.UTF-8):	Deterministyczne przydzielanie i zwalnianie brakujących zasobów
 Name:		ghc-%{pkgname}
 Version:	1.2.4
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Languages
 #Source0Download: http://hackage.haskell.org/package/resourcet
